@@ -1,0 +1,67 @@
+@import './reset.css';
+
+:root {
+  --color-skyblue: #90bbc8;
+  --color-light-skyblue: #a8cdd6;
+  --color-dark-skyblue: #758a95;
+  --color-dark-blue: #2f373a;
+  --color-red: #d04540;
+  --color-background: #dfedf2;
+  --color-white: #e3fafc;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  padding-top: 2rem;
+  background-color: var(--color-light-skyblue);
+}
+
+.links-wrapper {
+  margin: 0 auto;
+  width: 50vw;
+  height: 80vh;
+  background-color: var(--color-background);
+  border-radius: 4rem;
+  box-sizing: border-box;
+  padding: 4rem;
+  padding-top: 3rem;
+  overflow-y: auto;
+}
+
+.links-wrapper .links-title {
+  color: var(--color-dark-blue);
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.links-wrapper .link {
+  width: 100%;
+  height: 3rem;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  color: var(--color-red);
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  background-color: #fff;
+  transition: box-shadow 0.5s;
+  padding-left: 1rem;
+}
+
+.links-wrapper .link a {
+  cursor: pointer;
+}
+
+.links-wrapper .link:hover {
+  box-shadow: 0 3px 7px var(--color-skyblue),
+    0 3px 3px var(--color-dark-skyblue);
+}
+
+.links-wrapper .links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
