@@ -32,6 +32,10 @@
   font-weight: 600;
 }
 
+.drum-key:hover {
+  opacity: 0.7;
+}
+
 .drum-key .key-info {
   position: absolute;
   bottom: 0.3rem;

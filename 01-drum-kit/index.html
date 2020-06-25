@@ -11,6 +11,8 @@
       <section class="drum-kit"></section>
     </div>
     <script>
+      // 객체지향 설계로 바꾸기!
+      /**
       const KEY = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
       const CHARCODE_KEY = KEY.map((i) => i.toUpperCase().charCodeAt());
       const DRUM_SOUNDS = [
@@ -69,6 +71,113 @@
       };
 
       window.addEventListener('keydown', handleKeydown);
+      */
+
+      const KeySoundItem = class {
+        #key;
+        #sound;
+        constructor(key, sound) {
+          this.#key = key;
+          this.#sound = sound;
+        }
+        get keyAndSound() {
+          return [this.#key, this.#sound];
+        }
+      };
+
+      const KeySoundModel = class {
+        #keyAndSounds = new Set();
+        constructor(keyAndSounds) {
+          keyAndSounds.forEach(({ keyAndSound }) => {
+            const [key, sound] = keyAndSound;
+            this.#keyAndSounds.add({
+              key,
+              keyCode: key.toUpperCase().charCodeAt(),
+              sound,
+            });
+          });
+        }
+        get keyAndSounds() {
+          return this.#keyAndSounds;
+        }
+      };
+
+      // utils
+      const setDomAttribute = (dom, attrs) => {
+        Object.entries(attrs).forEach(([k, v]) => dom.setAttribute(k, v));
+        return dom;
+      };
+      const makeEle = (name) => document.createElement(name);
+
+      const Renderer = class {
+        #keySoundModel;
+        #parent;
+        #domEl = [];
+        constructor(parent, keySoundModel) {
+          this.#parent = parent;
+          this.#keySoundModel = keySoundModel;
+        }
+        render() {
+          this.#keySoundModel.keyAndSounds.forEach((keySound) => {
+            const { key, keyCode, sound } = keySound;
+
+            const article = setDomAttribute(makeEle('article'), {
+              class: 'drum-key',
+              'data-key-code': keyCode,
+            });
+            const khd = setDomAttribute(makeEle('khd'), {
+              innerHTML: key.toUpperCase(),
+            });
+            const span = setDomAttribute(makeEle('span'), {
+              class: 'key-info',
+              innerHTML: sound,
+            });
+            const audio = setDomAttribute(makeEle('audio'), {
+              'data-key-code': keyCode,
+              src: `sounds/${sound}.wav`,
+            });
+
+            article.appendChild(khd);
+            article.appendChild(span);
+            this.#parent.appendChild(article);
+            this.#parent.appendChild(audio);
+
+            this.#domEl.push({ article, audio });
+          });
+        }
+        _setEvent() {
+          const handleKeyDown = (event) => {
+            const { keyCode } = event;
+            const elements = this.#domEl.find(
+              ({ article }) => article.dataset['keyCode'] === keyCode
+            );
+            if (!elements) return;
+            const { article, audio } = elements;
+            article.classList.add('playing');
+            setTimeout(() => {
+              article.classList.remove('playing');
+            }, 100);
+            audio.currentTime = 0;
+            audio.play();
+          };
+          window.addEventListener('keydown', handleKeyDown);
+        }
+      };
+
+      // 클라이언트 코드
+      const keyAndSounds = [
+        new KeySoundItem('a', 'boom'),
+        new KeySoundItem('s', 'clap'),
+        new KeySoundItem('d', 'hihat'),
+        new KeySoundItem('f', 'kick'),
+        new KeySoundItem('g', 'openhat'),
+        new KeySoundItem('h', 'ride'),
+        new KeySoundItem('j', 'snare'),
+        new KeySoundItem('k', 'tink'),
+        new KeySoundItem('l', 'tom'),
+      ];
+      const keySoundModel = new KeySoundModel(keyAndSounds);
+      new Renderer(document.querySelector('.drum-kit'), keySoundModel).render();
     </script>
   </body>
 </html>
