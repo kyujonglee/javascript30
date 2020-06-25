@@ -1,11 +1,74 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Drum-Kit</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <div class="container">
+      <section class="drum-kit"></section>
+    </div>
+    <script>
+      const KEY = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
+      const CHARCODE_KEY = KEY.map((i) => i.toUpperCase().charCodeAt());
+      const DRUM_SOUNDS = [
+        'boom',
+        'clap',
+        'hihat',
+        'kick',
+        'openhat',
+        'ride',
+        'snare',
+        'tink',
+        'tom',
+      ];
+
+      const drumKit = document.querySelector('.drum-kit');
+      const container = document.querySelector('.container');
+
+      const audios = [];
+      const drumKeys = [];
+
+      DRUM_SOUNDS.forEach((sound, idx) => {
+        const audio = document.createElement('audio');
+        audio.dataset['keyCode'] = CHARCODE_KEY[idx];
+        audio.src = `sounds/${sound}.wav`;
+        container.appendChild(audio);
+        audios.push(audio);
+      });
+
+      KEY.forEach((key, idx) => {
+        const article = document.createElement('article');
+        article.classList.add('drum-key');
+        article.dataset['keyCode'] = CHARCODE_KEY[idx];
+        article.innerHTML = `
+          <kbd>${key.toUpperCase()}</kbd>
+          <span class="key-info">${DRUM_SOUNDS[idx]}</span>
+        `;
+        drumKit.appendChild(article);
+        drumKeys.push(article);
+      });
+
+      const handleKeydown = (event) => {
+        const { keyCode } = event;
+        const index = drumKeys.findIndex(
+          (ele) => ele.dataset['keyCode'] === String(keyCode)
+        );
+        if (index === -1) return;
+
+        drumKeys[index].classList.add('playing');
+        setTimeout(() => {
+          drumKeys[index].classList.remove('playing');
+        }, 100);
+
+        const audio = audios[index];
+        audio.currentTime = 0;
+        audio.play();
+      };
+
+      window.addEventListener('keydown', handleKeydown);
+    </script>
+  </body>
 </html>

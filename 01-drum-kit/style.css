@@ -1,0 +1,46 @@
+@import '../reset.css';
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('https://mblogthumb-phinf.pstatic.net/MjAxODAxMjVfMTQ3/MDAxNTE2ODcwNDE2NDYy.cqiCwYbc1qwzJxmpeJPGE0_1QdhJl0KJvErSlaSrZbAg.fPfrfDP7LT8vL0gW5eL7sOwOhVOCIWwm9gsRuZFZ7lsg.JPEG.d_hye97/FB_IMG_1516798638942.jpg?type=w800');
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.drum-kit {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 0.5rem;
+}
+
+.drum-key {
+  width: 4rem;
+  height: 4rem;
+  border: solid 3px black;
+  background-color: #212529;
+  opacity: 0.9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.drum-key .key-info {
+  position: absolute;
+  bottom: 0.3rem;
+  color: #fcc419;
+  font-size: 0.875rem;
+}
+
+.playing {
+  transform: scale(1.05);
+  border: solid 3px gold;
+  box-shadow: 0px 0px 3px 3px gold;
+}
